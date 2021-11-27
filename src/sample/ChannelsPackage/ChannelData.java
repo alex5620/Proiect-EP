@@ -11,8 +11,7 @@ public class ChannelData {
     private DoubleProperty frequency;
     private IntegerProperty channel;
 
-    public ChannelData()
-    {
+    public ChannelData() {
         id = new SimpleIntegerProperty();
         name = new SimpleStringProperty();
         startDate = new SimpleStringProperty();
@@ -22,8 +21,7 @@ public class ChannelData {
         channel = new SimpleIntegerProperty();
     }
 
-    void updateInfo(ChannelData channelData)
-    {
+    void updateInfo(ChannelData channelData) {
         setName(channelData.getNameProperty().getValue());
         setStartDate(channelData.getStartDateProperty().getValue());
         setEndDate(channelData.getEndDateProperty().getValue());
@@ -48,7 +46,7 @@ public class ChannelData {
         this.name.set(name);
     }
 
-    public StringProperty getStartDateProperty() {
+    StringProperty getStartDateProperty() {
         return startDate;
     }
 
@@ -56,7 +54,7 @@ public class ChannelData {
         this.startDate.set(startDate);
     }
 
-    public StringProperty getEndDateProperty() {
+    StringProperty getEndDateProperty() {
         return endDate;
     }
 

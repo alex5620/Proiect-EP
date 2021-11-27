@@ -13,8 +13,7 @@ public class TVPackageData {
     private DoubleProperty price;
     private ArrayList<ChannelData> availableChannels;
 
-    TVPackageData()
-    {
+    TVPackageData() {
         ID = new SimpleIntegerProperty();
         name = new SimpleStringProperty();
         startDate = new SimpleStringProperty();
@@ -23,8 +22,7 @@ public class TVPackageData {
         availableChannels = new ArrayList<>();
     }
 
-    void updateInfo(TVPackageData newPackage)
-    {
+    void updateInfo(TVPackageData newPackage) {
         setName(newPackage.getNameProperty().getValue());
         setStartDate(newPackage.getStartDateProperty().getValue());
         setEndDate(newPackage.getEndDateProperty().getValue());
@@ -47,41 +45,39 @@ public class TVPackageData {
         this.name.set(name);
     }
 
-    public StringProperty getStartDateProperty() {
+    StringProperty getStartDateProperty() {
         return startDate;
     }
 
-    public void setStartDate(String startDate) {
+    void setStartDate(String startDate) {
         this.startDate.set(startDate);
     }
 
-    public StringProperty getEndDateProperty() {
+    StringProperty getEndDateProperty() {
         return endDate;
     }
 
-    public void setEndDate(String endDate) {
+    void setEndDate(String endDate) {
         this.endDate.set(endDate);
     }
 
-    public DoubleProperty getPriceProperty() {
+    DoubleProperty getPriceProperty() {
         return price;
     }
 
-    public void setPrice(double price) {
+    void setPrice(double price) {
         this.price.set(price);
     }
 
-    public void addChannel(ChannelData channel)
-    {
+    void addChannel(ChannelData channel) {
         availableChannels.add(channel);
     }
 
-    public void removeChannel(ChannelData channel)
-    {
+    void removeChannel(ChannelData channel) {
         availableChannels.remove(channel);
     }
 
-    public ArrayList<ChannelData> getAvailableChannels() {
+    ArrayList<ChannelData> getAvailableChannels() {
         return availableChannels;
     }
 }

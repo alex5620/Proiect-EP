@@ -5,15 +5,14 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-public class ClientData{
+public class ClientData {
     private IntegerProperty id;
     private StringProperty firstName;
     private StringProperty lastName;
     private StringProperty phoneNumber;
     private StringProperty email;
 
-    public ClientData()
-    {
+    ClientData() {
         id = new SimpleIntegerProperty();
         firstName = new SimpleStringProperty();
         lastName = new SimpleStringProperty();
@@ -32,8 +31,7 @@ public class ClientData{
                 '}';
     }
 
-    void updateInfo(ClientData clientInfo)
-    {
+    void updateInfo(ClientData clientInfo) {
         setFirstName(clientInfo.getFirstNameProperty().getValue());
         setLastName(clientInfo.getLastNameProperty().getValue());
         setPhoneNumber(clientInfo.getPhoneNumberProperty().getValue());
@@ -48,35 +46,35 @@ public class ClientData{
         return id;
     }
 
-    public void setFirstName(String firstName) {
+    void setFirstName(String firstName) {
         this.firstName.setValue(firstName);
     }
 
-    public StringProperty getFirstNameProperty() {
+    StringProperty getFirstNameProperty() {
         return firstName;
     }
 
-    public void setLastName(String lastName) {
+    void setLastName(String lastName) {
         this.lastName.setValue(lastName);
     }
 
-    public StringProperty getLastNameProperty() {
+    StringProperty getLastNameProperty() {
         return lastName;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
+    void setPhoneNumber(String phoneNumber) {
         this.phoneNumber.setValue(phoneNumber);
     }
 
-    public StringProperty getPhoneNumberProperty() {
+    StringProperty getPhoneNumberProperty() {
         return phoneNumber;
     }
 
-    public void setEmail(String email) {
+    void setEmail(String email) {
         this.email.setValue(email);
     }
 
-    public StringProperty getEmailProperty() {
+    StringProperty getEmailProperty() {
         return email;
     }
 }

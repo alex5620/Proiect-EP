@@ -4,14 +4,18 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
 public class ShowClientDataDialogueController {
-    @FXML Label phoneNumber;
-    @FXML Label lastName;
-    @FXML Label firstName;
-    @FXML Label email;
-    @FXML Label id;
+    @FXML
+    Label phoneNumber;
+    @FXML
+    Label lastName;
+    @FXML
+    Label firstName;
+    @FXML
+    Label email;
+    @FXML
+    Label id;
 
-    void updateInfo(ClientData client)
-    {
+    void updateInfo(ClientData client) {
         phoneNumber.setText(client.getPhoneNumberProperty().getValue());
         lastName.setText(client.getLastNameProperty().getValue());
         firstName.setText(client.getFirstNameProperty().get());

@@ -4,14 +4,17 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
 public class InsertClientDataDialogueController {
-    @FXML TextField phoneNumber;
-    @FXML TextField lastName;
-    @FXML TextField firstName;
-    @FXML TextField email;
+    @FXML
+    TextField phoneNumber;
+    @FXML
+    TextField lastName;
+    @FXML
+    TextField firstName;
+    @FXML
+    TextField email;
 
     void processResult() {
-        if(firstName.getText().length() == 0 || lastName.getText().length() == 0)
-        {
+        if (firstName.getText().length() == 0 || lastName.getText().length() == 0) {
             ClientsDatabaseErrorChecker.getInstance().setErrorFound(true);
             ClientsDatabaseErrorChecker.getInstance().setErrorMessage("Campurile nume si prenume trebuie sa fie completate.");
             return;
@@ -24,18 +27,15 @@ public class InsertClientDataDialogueController {
         ClientsDatabaseHandler.getInstance().addClient(newClient);
     }
 
-    void updateTextFields(ClientData client)
-    {
+    void updateTextFields(ClientData client) {
         phoneNumber.setText(client.getPhoneNumberProperty().getValue());
         lastName.setText(client.getLastNameProperty().getValue());
         firstName.setText(client.getFirstNameProperty().get());
         email.setText(client.getEmailProperty().get());
     }
 
-    void updateClient(ClientData client)
-    {
-        if(firstName.getText().length() == 0 || lastName.getText().length() == 0)
-        {
+    void updateClient(ClientData client) {
+        if (firstName.getText().length() == 0 || lastName.getText().length() == 0) {
             ClientsDatabaseErrorChecker.getInstance().setErrorFound(true);
             ClientsDatabaseErrorChecker.getInstance().setErrorMessage("Campurile nume si prenume trebuie sa fie completate.");
             return;
@@ -47,8 +47,7 @@ public class InsertClientDataDialogueController {
         clientData.setPhoneNumber(phoneNumber.getText());
         clientData.setEmail(email.getText());
         ClientsDatabaseHandler.getInstance().updateClient(clientData);
-        if(!ClientsDatabaseErrorChecker.getInstance().getErrorFound())
-        {
+        if (!ClientsDatabaseErrorChecker.getInstance().getErrorFound()) {
             client.updateInfo(clientData);
         }
     }

@@ -1,7 +1,5 @@
 package sample.ClientsPackage;
 
-import sample.ContractsPackage.ContractsDatabaseHandler;
-
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -9,11 +7,11 @@ public class ClientsDatabaseHandler {
     private static ClientsDatabaseHandler clientsDatabaseHandler = new ClientsDatabaseHandler();
     private Connection con;
 
-    private ClientsDatabaseHandler(){};
+    private ClientsDatabaseHandler() {};
 
     private void getConnection() {
         try {
-            if(con==null || con.isClosed()) {
+            if (con == null || con.isClosed()) {
                 con = DriverManager.getConnection(
                         "jdbc:oracle:thin:@localhost:1521:xe", "c##test2", "test2");
             }
@@ -22,14 +20,14 @@ public class ClientsDatabaseHandler {
         }
     }
 
-    public int getClientsNumberById(String id) {
+    int getClientsNumberById(String id) {
         getConnection();
         int count = 0;
         try {
             PreparedStatement pStmt = con.prepareStatement("SELECT COUNT(*) FROM clienti WHERE TO_CHAR(id_client) LIKE ?");
-            pStmt.setString(1, "%"+id+"%");
+            pStmt.setString(1, "%" + id + "%");
             ResultSet res = pStmt.executeQuery();
-            if(res.next()) {
+            if (res.next()) {
                 count = res.getInt(1);
             }
             pStmt.close();
@@ -41,14 +39,14 @@ public class ClientsDatabaseHandler {
         return count;
     }
 
-    public ArrayList<ClientData> getClientsWhenIdSelected(int page, int itemsPerPage, String id) {
+    ArrayList<ClientData> getClientsWhenIdSelected(int page, int itemsPerPage, String id) {
         getConnection();
         ArrayList<ClientData> clients = null;
         try {
             clients = new ArrayList<>();
             PreparedStatement pStmt = con.prepareStatement("SELECT * FROM clienti WHERE TO_CHAR(id_client) LIKE ? ORDER BY id_client offset ? ROWS FETCH NEXT ? ROWS ONLY");
-            pStmt.setString(1, "%"+id+"%");
-            pStmt.setInt(2, page*itemsPerPage);
+            pStmt.setString(1, "%" + id + "%");
+            pStmt.setInt(2, page * itemsPerPage);
             pStmt.setInt(3, itemsPerPage);
             ResultSet res = pStmt.executeQuery();
             while (res.next()) {
@@ -76,7 +74,7 @@ public class ClientsDatabaseHandler {
         int count = 0;
         try {
             PreparedStatement pStmt = con.prepareStatement("SELECT COUNT(*) FROM clienti WHERE telefon LIKE ?");
-            pStmt.setString(1, "%"+phone+"%");
+            pStmt.setString(1, "%" + phone + "%");
             ResultSet res = pStmt.executeQuery();
             res.next();
             count = res.getInt(1);
@@ -95,9 +93,9 @@ public class ClientsDatabaseHandler {
         try {
             clients = new ArrayList<>();
             PreparedStatement pStmt = con.prepareStatement("SELECT * FROM clienti WHERE telefon LIKE ? " +
-                                                   "ORDER BY id_client offset ? ROWS FETCH NEXT ? ROWS ONLY");
-            pStmt.setString(1, "%"+phone+"%");
-            pStmt.setInt(2, page*itemsPerPage);
+                    "ORDER BY id_client offset ? ROWS FETCH NEXT ? ROWS ONLY");
+            pStmt.setString(1, "%" + phone + "%");
+            pStmt.setInt(2, page * itemsPerPage);
             pStmt.setInt(3, itemsPerPage);
             ResultSet res = pStmt.executeQuery();
             while (res.next()) {
@@ -125,9 +123,9 @@ public class ClientsDatabaseHandler {
         int count = 0;
         try {
             PreparedStatement pStmt = con.prepareStatement("SELECT COUNT(*) FROM clienti WHERE nume_client LIKE ?");
-            pStmt.setString(1, "%"+name+"%");
+            pStmt.setString(1, "%" + name + "%");
             ResultSet res = pStmt.executeQuery();
-            if(res.next()) {
+            if (res.next()) {
                 count = res.getInt(1);
             }
             res.close();
@@ -146,8 +144,8 @@ public class ClientsDatabaseHandler {
         try {
             clients = new ArrayList<>();
             PreparedStatement pStmt = con.prepareStatement("SELECT * FROM clienti WHERE nume_client LIKE ? ORDER BY id_client offset ? ROWS FETCH NEXT ? ROWS ONLY");
-            pStmt.setString(1, "%"+name+"%");
-            pStmt.setInt(2, page*itemsPerPage);
+            pStmt.setString(1, "%" + name + "%");
+            pStmt.setInt(2, page * itemsPerPage);
             pStmt.setInt(3, itemsPerPage);
             ResultSet res = pStmt.executeQuery();
             while (res.next()) {
@@ -170,15 +168,14 @@ public class ClientsDatabaseHandler {
         return clients;
     }
 
-    void updateClient(ClientData client)
-    {
+    void updateClient(ClientData client) {
         getConnection();
         try {
-            PreparedStatement pStmt = con.prepareStatement( "UPDATE clienti SET nume_client = ?," +
-                                                                "telefon = ?," +
-                                                                "email = ?" +
-                                                                "WHERE id_client = ?");
-            pStmt.setString(1, client.getLastNameProperty().getValue().toUpperCase()+"_"+
+            PreparedStatement pStmt = con.prepareStatement("UPDATE clienti SET nume_client = ?," +
+                    "telefon = ?," +
+                    "email = ?" +
+                    "WHERE id_client = ?");
+            pStmt.setString(1, client.getLastNameProperty().getValue().toUpperCase() + "_" +
                     client.getFirstNameProperty().getValue().toUpperCase());
             pStmt.setString(2, client.getPhoneNumberProperty().getValue());
             pStmt.setString(3, client.getEmailProperty().getValue());
@@ -193,19 +190,13 @@ public class ClientsDatabaseHandler {
         }
     }
 
-    void removeAllClientData(int id)
-    {
+    void removeClient(int id) {
         getConnection();
         try {
-            PreparedStatement pStmt = con.prepareStatement("SELECT nr_contract FROM contracte WHERE id_client = ?");
+            PreparedStatement pStmt = con.prepareStatement("DELETE FROM clienti WHERE id_client = ?");
             pStmt.setInt(1, id);
-            ResultSet res = pStmt.executeQuery();
-            while (res.next()) {
-                ContractsDatabaseHandler.getInstance().removeAllContractData(res.getInt(1));
-            }
-            res.close();
+            pStmt.executeQuery();
             pStmt.close();
-            removeClient(id);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -213,25 +204,12 @@ public class ClientsDatabaseHandler {
         }
     }
 
-    private void removeClient(int id)
-    {
-        try {
-            PreparedStatement pStmt = con.prepareStatement( "DELETE FROM clienti WHERE id_client = ?");
-            pStmt.setInt(1, id);
-            pStmt.executeQuery();
-            pStmt.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    void addClient(ClientData client)
-    {
+    void addClient(ClientData client) {
         getConnection();
         try {
-            PreparedStatement pStmt = con.prepareStatement( "INSERT INTO clienti VALUES(?,?,?,?)");
-            pStmt.setInt(1, ClientsDatabaseHandler.getInstance().getMaxID()+1);
-            pStmt.setString(2, client.getLastNameProperty().getValue().toUpperCase()+"_"+
+            PreparedStatement pStmt = con.prepareStatement("INSERT INTO clienti VALUES(?,?,?,?)");
+            pStmt.setInt(1, ClientsDatabaseHandler.getInstance().getMaxID() + 1);
+            pStmt.setString(2, client.getLastNameProperty().getValue().toUpperCase() + "_" +
                     client.getFirstNameProperty().getValue().toUpperCase());
             pStmt.setString(3, client.getPhoneNumberProperty().getValue());
             pStmt.setString(4, client.getEmailProperty().getValue());
@@ -245,7 +223,7 @@ public class ClientsDatabaseHandler {
         }
     }
 
-    public int getMaxID() {
+    private int getMaxID() {
         int maxID = 0;
         try {
             Statement stmt = con.createStatement();
@@ -261,32 +239,9 @@ public class ClientsDatabaseHandler {
         return maxID;
     }
 
-    public boolean checkIfClientExists(int id) {
-        getConnection();
-        boolean clientExists = false;
+    private void closeConnection() {
         try {
-            PreparedStatement pStmt = con.prepareStatement("SELECT COUNT(*) FROM clienti WHERE id_client = ?");
-            pStmt.setInt(1, id);
-            ResultSet res = pStmt.executeQuery();
-            if(res.next()) {
-                if(res.getInt(1) == 1)
-                {
-                    clientExists = true;
-                }
-            }
-            pStmt.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            closeConnection();
-        }
-        return clientExists;
-    }
-
-    private void closeConnection()
-    {
-        try {
-            if(con!=null && !con.isClosed()) {
+            if (con != null && !con.isClosed()) {
                 con.close();
             }
         } catch (SQLException e) {

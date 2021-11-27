@@ -24,19 +24,27 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class ClientsController implements Initializable {
-    @FXML private Pane pane;
-    @FXML private Button backButton, addButton, removeButton, modifyButton;
-    @FXML private Label infoIcon;
-    @FXML private RadioButton idRButton, nameRButton, phoneRButton;
-    @FXML private TextField textField;
-    @FXML private Pagination pagination;
-    @FXML private TableView<ClientData> table;
-    @FXML private TableColumn<ClientData, Integer> column1;
-    @FXML private TableColumn<ClientData, String> column2, column3, column4, column5;
+    @FXML
+    private Pane pane;
+    @FXML
+    private Button backButton, addButton, removeButton, modifyButton;
+    @FXML
+    private Label infoIcon;
+    @FXML
+    private RadioButton idRButton, nameRButton, phoneRButton;
+    @FXML
+    private TextField textField;
+    @FXML
+    private Pagination pagination;
+    @FXML
+    private TableView<ClientData> table;
+    @FXML
+    private TableColumn<ClientData, Integer> column1;
+    @FXML
+    private TableColumn<ClientData, String> column2, column3, column4, column5;
 
     @FXML
-    private void switchToMainMenuScene()
-    {
+    private void switchToMainMenuScene() {
         FXMLLoader loader = new FXMLLoader(Controller.class.getResource("main_menu.fxml"));
         try {
             loader.load();
@@ -49,17 +57,14 @@ public class ClientsController implements Initializable {
     }
 
     @FXML
-    private void addNewClient()
-    {
+    private void addNewClient() {
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.initOwner(pane.getScene().getWindow());
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("FXMLs/insert_client_data_dialogue.fxml"));
-        try
-        {
+        try {
             dialog.getDialogPane().setContent(fxmlLoader.load());
-        }catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
             return;
         }
@@ -73,13 +78,11 @@ public class ClientsController implements Initializable {
                     InsertClientDataDialogueController controller = fxmlLoader.getController();
                     controller.processResult();
                     ClientsDatabaseErrorChecker errorChecker = ClientsDatabaseErrorChecker.getInstance();
-                    if(errorChecker.getErrorFound()) {
+                    if (errorChecker.getErrorFound()) {
                         errorChecker.createAlertDialogue();
                         errorChecker.setErrorFound(false);
                         event.consume();
-                    }
-                    else
-                    {
+                    } else {
                         textField.setText(" " + textField.getText());
                         textField.setText(textField.getText().substring(1));
                         pagination.setCurrentPageIndex(pagination.getPageCount() - 1);
@@ -91,17 +94,14 @@ public class ClientsController implements Initializable {
     }
 
     @FXML
-    private void modifyClient()
-    {
+    private void modifyClient() {
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.initOwner(pane.getScene().getWindow());
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("FXMLs/insert_client_data_dialogue.fxml"));
-        try
-        {
+        try {
             dialog.getDialogPane().setContent(fxmlLoader.load());
-        }catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
             return;
         }
@@ -110,8 +110,7 @@ public class ClientsController implements Initializable {
         dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
         InsertClientDataDialogueController controller = fxmlLoader.getController();
         ClientData client = table.getSelectionModel().getSelectedItem();
-        if(client==null)
-        {
+        if (client == null) {
             createAlertDialogue();
             return;
         }
@@ -122,7 +121,7 @@ public class ClientsController implements Initializable {
                 event -> {
                     controller.updateClient(client);
                     ClientsDatabaseErrorChecker errorChecker = ClientsDatabaseErrorChecker.getInstance();
-                    if(errorChecker.getErrorFound()) {
+                    if (errorChecker.getErrorFound()) {
                         errorChecker.createAlertDialogue();
                         errorChecker.setErrorFound(false);
                         event.consume();
@@ -160,11 +159,9 @@ public class ClientsController implements Initializable {
                 dialog.initOwner(pane.getScene().getWindow());
                 FXMLLoader fxmlLoader = new FXMLLoader();
                 fxmlLoader.setLocation(getClass().getResource("FXMLs/show_client_data_dialogue.fxml"));
-                try
-                {
+                try {
                     dialog.getDialogPane().setContent(fxmlLoader.load());
-                }catch (IOException e)
-                {
+                } catch (IOException e) {
                     e.printStackTrace();
                     return;
                 }
@@ -178,8 +175,7 @@ public class ClientsController implements Initializable {
         });
     }
 
-    private void initButtons()
-    {
+    private void initButtons() {
         backButton.setOnMouseEntered(e -> backButton.setStyle(sample.Styles.HOVERED_BUTTON_STYLE));
         backButton.setOnMouseExited(e -> backButton.setStyle(Styles.IDLE_BUTTON_STYLE));
         addButton.setOnMouseEntered(e -> addButton.setStyle(Styles.HOVERED_BUTTON_STYLE));
@@ -189,19 +185,17 @@ public class ClientsController implements Initializable {
         removeButton.setOnAction(event ->
         {
             ClientData client = table.getSelectionModel().getSelectedItem();
-            if(client!=null)
-            {
+            if (client != null) {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Ştergere date client.");
                 alert.setHeaderText("");
-                alert.setContentText("În urma ştergerii clientului va dispărea şi istoricul despre " +
-                        "contractele şi dispozitivele închiriate. Doriţi să continuaţi?");
+                alert.setContentText("Datele clientului vor fi şterse definitiv. Doriţi să continuaţi?");
                 ButtonType yesButton = new ButtonType("Da", ButtonBar.ButtonData.YES);
                 ButtonType noButton = new ButtonType("Nu", ButtonBar.ButtonData.NO);
                 alert.getButtonTypes().setAll(yesButton, noButton);
                 alert.showAndWait().ifPresent(type -> {
                     if (type == yesButton) {
-                        ClientsDatabaseHandler.getInstance().removeAllClientData(client.getIdProperty().getValue());
+                        ClientsDatabaseHandler.getInstance().removeClient(client.getIdProperty().getValue());
                         int currentPage = pagination.getCurrentPageIndex();
                         int pageCount = pagination.getPageCount();
                         int clientsOnPage = Clients.getClients().getSize();
@@ -214,9 +208,7 @@ public class ClientsController implements Initializable {
                         }
                     }
                 });
-            }
-            else
-            {
+            } else {
                 createAlertDialogue();
             }
         });
@@ -224,8 +216,7 @@ public class ClientsController implements Initializable {
         modifyButton.setOnMouseExited(e -> modifyButton.setStyle(Styles.IDLE_BUTTON_STYLE));
     }
 
-    private void initInfoIcon()
-    {
+    private void initInfoIcon() {
         Image img = new Image("resources/info.png");
         ImageView view = new ImageView(img);
         infoIcon.setGraphic(view);
@@ -237,8 +228,7 @@ public class ClientsController implements Initializable {
         infoIcon.setTooltip(tooltip);
     }
 
-    private void initToggleGroup()
-    {
+    private void initToggleGroup() {
         ToggleGroup toggleGroup = new ToggleGroup();
         idRButton.setToggleGroup(toggleGroup);
         idRButton.setSelected(true);
@@ -251,18 +241,15 @@ public class ClientsController implements Initializable {
         textField.textProperty().addListener((observable, oldValue, newValue) -> {
             if (idRButton.isSelected()) {
                 doPaginationWhenIdSelected();
-            }
-            else if (phoneRButton.isSelected()) {
+            } else if (phoneRButton.isSelected()) {
                 doPaginationWhenPhoneSelected();
-            }
-            else {
+            } else {
                 doPaginationWhenNameSelected();
             }
         });
     }
 
-    private void doPaginationWhenIdSelected()
-    {
+    private void doPaginationWhenIdSelected() {
         int pagesNumber = getProperPageNumber(ClientsDatabaseHandler.getInstance().getClientsNumberById(textField.getText().trim()));
         pagination.setPageCount(pagesNumber);
         pagination.setPageFactory(this::createPageWhenIdSelected);
@@ -275,8 +262,7 @@ public class ClientsController implements Initializable {
         return new Pane(table);
     }
 
-    private void doPaginationWhenPhoneSelected()
-    {
+    private void doPaginationWhenPhoneSelected() {
         int pagesNumber = getProperPageNumber(ClientsDatabaseHandler.getInstance().getClientsNumberByPhone(textField.getText()));
         pagination.setPageCount(pagesNumber);
         pagination.setPageFactory(this::createPageWhenPhoneSelected);
@@ -289,8 +275,7 @@ public class ClientsController implements Initializable {
         return new Pane(table);
     }
 
-    private void doPaginationWhenNameSelected()
-    {
+    private void doPaginationWhenNameSelected() {
         int pagesNumber = getProperPageNumber(ClientsDatabaseHandler.getInstance().getClientsNumberByName(textField.getText().trim().toUpperCase()));
         pagination.setPageCount(pagesNumber);
         pagination.setPageFactory(this::createPageWhenNameSelected);
@@ -303,8 +288,7 @@ public class ClientsController implements Initializable {
         return new Pane(table);
     }
 
-    private int rowsPerPage()
-    {
+    private int rowsPerPage() {
         return 17;
     }
 
@@ -316,8 +300,7 @@ public class ClientsController implements Initializable {
         return pagesNumber;
     }
 
-    private void createAlertDialogue()
-    {
+    private void createAlertDialogue() {
         Alert alert = new Alert(Alert.AlertType.ERROR, "\n        Niciun client nu a fost selectat.", ButtonType.OK);
         alert.setHeaderText("");
         alert.setTitle("Error");

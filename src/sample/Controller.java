@@ -17,7 +17,6 @@ import java.util.ResourceBundle;
 public class Controller implements Initializable {
     @FXML private Pane pane;
     @FXML private Button clientsButton;
-    @FXML private Button subButton;
     @FXML private Button packButton;
     @FXML private Button channelsButton;
     @FXML private Button exitButton;
@@ -32,12 +31,6 @@ public class Controller implements Initializable {
     private void switchToClientsScene()
     {
         switchTheScene("ClientsPackage/FXMLs/clients_menu.fxml");
-    }
-
-    @FXML
-    private void switchToSubScene()
-    {
-        switchTheScene("ContractsPackage/FXMLs/contracts_menu.fxml");
     }
 
     @FXML
@@ -64,8 +57,6 @@ public class Controller implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         clientsButton.setOnMouseEntered(e -> clientsButton.setStyle(Styles.HOVERED_BUTTON_STYLE));
         clientsButton.setOnMouseExited(e -> clientsButton.setStyle(Styles.IDLE_BUTTON_STYLE));
-        subButton.setOnMouseEntered(e -> subButton.setStyle(Styles.HOVERED_BUTTON_STYLE));
-        subButton.setOnMouseExited(e -> subButton.setStyle(Styles.IDLE_BUTTON_STYLE));
         packButton.setOnMouseEntered(e -> packButton.setStyle(Styles.HOVERED_BUTTON_STYLE));
         packButton.setOnMouseExited(e -> packButton.setStyle(Styles.IDLE_BUTTON_STYLE));
         channelsButton.setOnMouseEntered(e -> channelsButton.setStyle(Styles.HOVERED_BUTTON_STYLE));

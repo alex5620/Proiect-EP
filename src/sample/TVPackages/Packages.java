@@ -13,7 +13,7 @@ public class Packages {
         allPackages = FXCollections.observableArrayList(PackagesDatabaseHandler.getInstance().getPackages(page, itemsPerPage, name));
     }
 
-    public static Packages getPackages() {
+    static Packages getPackages() {
         return packages;
     }
 
@@ -21,17 +21,7 @@ public class Packages {
         return allPackages.size();
     }
 
-    public void addPackage(TVPackageData packageData)
-    {
-        allPackages.add(packageData);
-    }
-
-    public void removePackage(TVPackageData packageData)
-    {
-        allPackages.remove(packageData);
-    }
-
-    public ObservableList<TVPackageData> getAllPackages() {
+    ObservableList<TVPackageData> getAllPackages() {
         return allPackages;
     }
 }

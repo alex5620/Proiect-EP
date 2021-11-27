@@ -2,7 +2,6 @@ package sample.TVPackages;
 
 import com.sun.javafx.scene.control.skin.TableHeaderRow;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -23,17 +22,23 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class PackagesController implements Initializable {
-    @FXML private Pane pane;
-    @FXML private Button backButton, addButton, removeButton, modifyButton, addChannels, removeChannels;
-    @FXML private TextField textField;
-    @FXML private Pagination pagination;
-    @FXML private TableView<TVPackageData> table;
-    @FXML private TableColumn<TVPackageData, String> nameColumn, startDateColumn, endDateColumn;
-    @FXML private TableColumn<TVPackageData, Double> priceColumn;
+    @FXML
+    private Pane pane;
+    @FXML
+    private Button backButton, addButton, removeButton, modifyButton, addChannels, removeChannels;
+    @FXML
+    private TextField textField;
+    @FXML
+    private Pagination pagination;
+    @FXML
+    private TableView<TVPackageData> table;
+    @FXML
+    private TableColumn<TVPackageData, String> nameColumn, startDateColumn, endDateColumn;
+    @FXML
+    private TableColumn<TVPackageData, Double> priceColumn;
 
     @FXML
-    private void switchToMainMenuScene()
-    {
+    private void switchToMainMenuScene() {
         FXMLLoader loader = new FXMLLoader(Controller.class.getResource("main_menu.fxml"));
         try {
             loader.load();
@@ -46,17 +51,14 @@ public class PackagesController implements Initializable {
     }
 
     @FXML
-    private void addNewPackage()
-    {
+    private void addNewPackage() {
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.initOwner(pane.getScene().getWindow());
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("FXMLs/insert_package_data_dialogue.fxml"));
-        try
-        {
+        try {
             dialog.getDialogPane().setContent(fxmlLoader.load());
-        }catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
             return;
         }
@@ -70,13 +72,11 @@ public class PackagesController implements Initializable {
                     InsertPackageDataDialogueController controller = fxmlLoader.getController();
                     controller.processResult();
                     PackagesDatabaseErrorChecker errorChecker = PackagesDatabaseErrorChecker.getInstance();
-                    if(errorChecker.getErrorFound()) {
+                    if (errorChecker.getErrorFound()) {
                         errorChecker.createAlertDialogue();
                         errorChecker.setErrorFound(false);
                         event.consume();
-                    }
-                    else
-                    {
+                    } else {
                         textField.setText(" " + textField.getText());
                         textField.setText(textField.getText().substring(1));
                         pagination.setCurrentPageIndex(pagination.getPageCount() - 1);
@@ -88,17 +88,14 @@ public class PackagesController implements Initializable {
     }
 
     @FXML
-    private void modifyPackage()
-    {
+    private void modifyPackage() {
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.initOwner(pane.getScene().getWindow());
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("FXMLs/insert_package_data_dialogue.fxml"));
-        try
-        {
+        try {
             dialog.getDialogPane().setContent(fxmlLoader.load());
-        }catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
             return;
         }
@@ -107,8 +104,7 @@ public class PackagesController implements Initializable {
         dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
         InsertPackageDataDialogueController controller = fxmlLoader.getController();
         TVPackageData packageData = table.getSelectionModel().getSelectedItem();
-        if(packageData==null)
-        {
+        if (packageData == null) {
             createAlertDialogue("Niciun pachet nu a fost selectat.");
             return;
         }
@@ -119,13 +115,11 @@ public class PackagesController implements Initializable {
                 event -> {
                     controller.updatePackage(packageData);
                     PackagesDatabaseErrorChecker errorChecker = PackagesDatabaseErrorChecker.getInstance();
-                    if(errorChecker.getErrorFound()) {
+                    if (errorChecker.getErrorFound()) {
                         errorChecker.createAlertDialogue();
                         errorChecker.setErrorFound(false);
                         event.consume();
-                    }
-                    else
-                    {
+                    } else {
                         table.refresh();
                     }
                 }
@@ -134,17 +128,14 @@ public class PackagesController implements Initializable {
     }
 
     @FXML
-    public void listAvailableChannels()
-    {
+    public void listAvailableChannels() {
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.initOwner(pane.getScene().getWindow());
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("FXMLs/add_channels_dialogue.fxml"));
-        try
-        {
+        try {
             dialog.getDialogPane().setContent(fxmlLoader.load());
-        }catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
             return;
         }
@@ -153,31 +144,27 @@ public class PackagesController implements Initializable {
         dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
         AddChannelsDialogueController controller = fxmlLoader.getController();
         TVPackageData packageData = table.getSelectionModel().getSelectedItem();
-        if(packageData==null)
-        {
+        if (packageData == null) {
             createAlertDialogue("Niciun pachet nu a fost selectat.");
             return;
         }
         controller.listAvailableChannels(packageData);
         Optional<ButtonType> result = dialog.showAndWait();
-        if(result.isPresent() && result.get() == ButtonType.OK) {
+        if (result.isPresent() && result.get() == ButtonType.OK) {
             controller.addSelectedChannels(packageData);
             table.refresh();
         }
     }
 
     @FXML
-    public void removeChannels()
-    {
+    public void removeChannels() {
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.initOwner(pane.getScene().getWindow());
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("FXMLs/remove_channels_dialogue.fxml"));
-        try
-        {
+        try {
             dialog.getDialogPane().setContent(fxmlLoader.load());
-        }catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
             return;
         }
@@ -185,8 +172,7 @@ public class PackagesController implements Initializable {
         dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
         RemoveChannelsDialogueController controller = fxmlLoader.getController();
         TVPackageData tvPackage = table.getSelectionModel().getSelectedItem();
-        if(tvPackage==null)
-        {
+        if (tvPackage == null) {
             createAlertDialogue("Niciun pachet nu a fost selectat.");
             return;
         }
@@ -219,11 +205,9 @@ public class PackagesController implements Initializable {
                 dialog.initOwner(pane.getScene().getWindow());
                 FXMLLoader fxmlLoader = new FXMLLoader();
                 fxmlLoader.setLocation(getClass().getResource("FXMLs/show_channels_dialogue.fxml"));
-                try
-                {
+                try {
                     dialog.getDialogPane().setContent(fxmlLoader.load());
-                }catch (IOException e)
-                {
+                } catch (IOException e) {
                     e.printStackTrace();
                     return;
                 }
@@ -237,8 +221,7 @@ public class PackagesController implements Initializable {
         });
     }
 
-    private void initButtons()
-    {
+    private void initButtons() {
         backButton.setOnMouseEntered(e -> backButton.setStyle(Styles.HOVERED_BUTTON_STYLE));
         backButton.setOnMouseExited(e -> backButton.setStyle(Styles.IDLE_BUTTON_STYLE));
         addButton.setOnMouseEntered(e -> addButton.setStyle(Styles.HOVERED_BUTTON_STYLE));
@@ -248,7 +231,7 @@ public class PackagesController implements Initializable {
         removeButton.setOnAction(event ->
         {
             TVPackageData packageData = table.getSelectionModel().getSelectedItem();
-            if(packageData!=null) {
+            if (packageData != null) {
                 PackagesDatabaseHandler.getInstance().removePackage(packageData.getIdProperty().getValue());
                 int currentPage = pagination.getCurrentPageIndex();
                 int pageCount = pagination.getPageCount();
@@ -256,15 +239,11 @@ public class PackagesController implements Initializable {
                 textField.setText(" " + textField.getText());
                 textField.setText(textField.getText().substring(1));
                 if (pageCount - 1 == currentPage && channelsOnPage == 1) {
-                    pagination.setCurrentPageIndex(currentPage-1);
-                }
-                else
-                {
+                    pagination.setCurrentPageIndex(currentPage - 1);
+                } else {
                     pagination.setCurrentPageIndex(currentPage);
                 }
-            }
-            else
-            {
+            } else {
                 createAlertDialogue("Niciun pachet nu a fost selectat.");
             }
         });
@@ -289,8 +268,7 @@ public class PackagesController implements Initializable {
         return new Pane(table);
     }
 
-    private int rowsPerPage()
-    {
+    private int rowsPerPage() {
         return 18;
     }
 
@@ -308,9 +286,8 @@ public class PackagesController implements Initializable {
         });
     }
 
-    private void createAlertDialogue(String message)
-    {
-        Alert alert = new Alert(Alert.AlertType.ERROR, "\n        "+message, ButtonType.OK);
+    private void createAlertDialogue(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR, "\n        " + message, ButtonType.OK);
         alert.setHeaderText("");
         alert.setTitle("Error");
         alert.getDialogPane().setMaxWidth(350);

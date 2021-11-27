@@ -22,19 +22,25 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class ChannelsController implements Initializable {
-    @FXML private Pane pane;
-    @FXML private Button backButton, addButton, removeButton, modifyButton;
-    @FXML private TextField textField;
-    @FXML private Pagination pagination;
-    @FXML private TableView<ChannelData> table;
-    @FXML private TableColumn<ChannelData, Integer> channelColumn;
-    @FXML private TableColumn<ChannelData, String> nameColumn, startDateColumn, endDateColumn, typeColumn;
-    @FXML private TableColumn<ChannelData, Double> frequencyColumn;
+    @FXML
+    private Pane pane;
+    @FXML
+    private Button backButton, addButton, removeButton, modifyButton;
+    @FXML
+    private TextField textField;
+    @FXML
+    private Pagination pagination;
+    @FXML
+    private TableView<ChannelData> table;
+    @FXML
+    private TableColumn<ChannelData, Integer> channelColumn;
+    @FXML
+    private TableColumn<ChannelData, String> nameColumn, startDateColumn, endDateColumn, typeColumn;
+    @FXML
+    private TableColumn<ChannelData, Double> frequencyColumn;
 
     @FXML
-    private void switchToMainMenuScene()
-    {
-
+    private void switchToMainMenuScene() {
         FXMLLoader loader = new FXMLLoader(Controller.class.getResource("main_menu.fxml"));
         try {
             loader.load();
@@ -47,17 +53,14 @@ public class ChannelsController implements Initializable {
     }
 
     @FXML
-    private void addNewChannel()
-    {
+    private void addNewChannel() {
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.initOwner(pane.getScene().getWindow());
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("FXMLs/insert_channel_data_dialogue.fxml"));
-        try
-        {
+        try {
             dialog.getDialogPane().setContent(fxmlLoader.load());
-        }catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
             return;
         }
@@ -71,13 +74,11 @@ public class ChannelsController implements Initializable {
                     InsertChannelDataDialogueController controller = fxmlLoader.getController();
                     controller.processResult();
                     ChannelsDatabaseErrorChecker errorChecker = ChannelsDatabaseErrorChecker.getInstance();
-                    if(errorChecker.getErrorFound()) {
+                    if (errorChecker.getErrorFound()) {
                         errorChecker.createAlertDialogue();
                         errorChecker.setErrorFound(false);
                         event.consume();
-                    }
-                    else
-                    {
+                    } else {
                         textField.setText(" " + textField.getText());
                         textField.setText(textField.getText().substring(1));
                         pagination.setCurrentPageIndex(pagination.getPageCount() - 1);
@@ -89,17 +90,14 @@ public class ChannelsController implements Initializable {
     }
 
     @FXML
-    private void modifyChannel()
-    {
+    private void modifyChannel() {
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.initOwner(pane.getScene().getWindow());
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("FXMLs/insert_channel_data_dialogue.fxml"));
-        try
-        {
+        try {
             dialog.getDialogPane().setContent(fxmlLoader.load());
-        }catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
             return;
         }
@@ -108,8 +106,7 @@ public class ChannelsController implements Initializable {
         dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
         InsertChannelDataDialogueController controller = fxmlLoader.getController();
         ChannelData channel = table.getSelectionModel().getSelectedItem();
-        if(channel==null)
-        {
+        if (channel == null) {
             createAlertDialogue();
             return;
         }
@@ -120,13 +117,11 @@ public class ChannelsController implements Initializable {
                 event -> {
                     controller.updateChannel(channel);
                     ChannelsDatabaseErrorChecker errorChecker = ChannelsDatabaseErrorChecker.getInstance();
-                    if(errorChecker.getErrorFound()) {
+                    if (errorChecker.getErrorFound()) {
                         errorChecker.createAlertDialogue();
                         errorChecker.setErrorFound(false);
                         event.consume();
-                    }
-                    else
-                    {
+                    } else {
                         table.refresh();
                     }
                 }
@@ -157,8 +152,7 @@ public class ChannelsController implements Initializable {
         channelColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getChannelProperty().getValue()).asObject());
     }
 
-    private void initButtons()
-    {
+    private void initButtons() {
         backButton.setOnMouseEntered(e -> backButton.setStyle(sample.Styles.HOVERED_BUTTON_STYLE));
         backButton.setOnMouseExited(e -> backButton.setStyle(Styles.IDLE_BUTTON_STYLE));
         addButton.setOnMouseEntered(e -> addButton.setStyle(Styles.HOVERED_BUTTON_STYLE));
@@ -168,7 +162,7 @@ public class ChannelsController implements Initializable {
         removeButton.setOnAction(event ->
         {
             ChannelData channel = table.getSelectionModel().getSelectedItem();
-            if(channel!=null) {
+            if (channel != null) {
                 ChannelsDatabaseHandler.getInstance().removeChannel(channel.getIdProperty().getValue());
                 int currentPage = pagination.getCurrentPageIndex();
                 int pageCount = pagination.getPageCount();
@@ -176,15 +170,11 @@ public class ChannelsController implements Initializable {
                 textField.setText(" " + textField.getText());
                 textField.setText(textField.getText().substring(1));
                 if (pageCount - 1 == currentPage && channelsOnPage == 1) {
-                    pagination.setCurrentPageIndex(currentPage-1);
-                }
-                else
-                {
+                    pagination.setCurrentPageIndex(currentPage - 1);
+                } else {
                     pagination.setCurrentPageIndex(currentPage);
                 }
-            }
-            else
-            {
+            } else {
                 createAlertDialogue();
             }
         });
@@ -192,8 +182,7 @@ public class ChannelsController implements Initializable {
         modifyButton.setOnMouseExited(e -> modifyButton.setStyle(Styles.IDLE_BUTTON_STYLE));
     }
 
-    private int rowsPerPage()
-    {
+    private int rowsPerPage() {
         return 18;
     }
 
@@ -209,8 +198,7 @@ public class ChannelsController implements Initializable {
         textField.textProperty().addListener((observable, oldValue, newValue) -> doPagination());
     }
 
-    private void doPagination()
-    {
+    private void doPagination() {
         int pagesNumber = getProperPageNumber(ChannelsDatabaseHandler.getInstance().getChannelsNumber(textField.getText().trim().toUpperCase()));
         pagination.setPageCount(pagesNumber);
         pagination.setPageFactory(this::createPage);
@@ -223,8 +211,7 @@ public class ChannelsController implements Initializable {
         return new Pane(table);
     }
 
-    private void createAlertDialogue()
-    {
+    private void createAlertDialogue() {
         Alert alert = new Alert(Alert.AlertType.ERROR, "\n        Niciun program nu a fost selectat.", ButtonType.OK);
         alert.setHeaderText("");
         alert.setTitle("Error");

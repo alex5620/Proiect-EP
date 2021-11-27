@@ -11,14 +11,13 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import sample.ChannelsPackage.ChannelData;
-import sample.ContractsPackage.ContractData;
-import sample.ContractsPackage.Device;
 
 public class RemoveChannelsDialogueController {
-    @FXML ListView listView;
+    @FXML
+    ListView listView;
     private TVPackageData tvPackage;
-    void addChannels(TVPackageData tvPackage)
-    {
+
+    void addChannels(TVPackageData tvPackage) {
         ObservableList<ChannelData> list = FXCollections.observableArrayList(tvPackage.getAvailableChannels());
         listView.setCellFactory(param -> new TableCell());
         listView.setItems(list);
@@ -52,7 +51,7 @@ public class RemoveChannelsDialogueController {
                 String type = item.getTypeProperty().getValue();
                 String frequency = Double.toString(item.getFrequencyProperty().getValue());
                 String channel = Integer.toString(item.getChannelProperty().getValue());
-                label.setText("Denumire: "+name+",   tip: "+type+",   frecvenţa: "+frequency+",   canal: "+channel+".");
+                label.setText("Denumire: " + name + ",   tip: " + type + ",   frecvenţa: " + frequency + ",   canal: " + channel + ".");
                 setGraphic(hbox);
             }
         }

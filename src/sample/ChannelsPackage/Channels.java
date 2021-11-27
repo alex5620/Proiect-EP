@@ -9,30 +9,19 @@ public class Channels {
 
     private Channels() {}
 
-    public void addData(int page, int itemsPerPage, String name)
-    {
-        allChannels = FXCollections.observableArrayList(ChannelsDatabaseHandler.getInstance().getChannels(page, itemsPerPage, name));
-    }
-
-    public static Channels getChannels() {
+    static Channels getChannels() {
         return channels;
     }
 
-    public ObservableList<ChannelData> getAllChannels() {
-        return allChannels;
+    void addData(int page, int itemsPerPage, String name) {
+        allChannels = FXCollections.observableArrayList(ChannelsDatabaseHandler.getInstance().getChannels(page, itemsPerPage, name));
     }
 
-    public void addChannel(ChannelData channelData)
-    {
-        allChannels.add(channelData);
+    ObservableList<ChannelData> getAllChannels() {
+        return allChannels;
     }
 
     public int getSize() {
         return allChannels.size();
-    }
-
-    public void removeChannel(ChannelData channel)
-    {
-        allChannels.remove(channel);
     }
 }
