@@ -12,15 +12,18 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import sample.ChannelsPackage.ChannelData;
 
+import java.util.List;
+
 public class RemoveChannelsDialogueController {
     @FXML
     ListView listView;
     private TVPackageData tvPackage;
 
     void addChannels(TVPackageData tvPackage) {
-        ObservableList<ChannelData> list = FXCollections.observableArrayList(tvPackage.getAvailableChannels());
+        List<ChannelData> list = tvPackage.getAvailableChannels();
+        ChannelsSorter.insertionSort(list);
         listView.setCellFactory(param -> new TableCell());
-        listView.setItems(list);
+        listView.setItems(FXCollections.observableArrayList(list));
         this.tvPackage = tvPackage;
     }
 

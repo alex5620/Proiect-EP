@@ -4,6 +4,9 @@
     <root id="archive" name="VIVO TV.jar">
       <element id="module-output" name="VIVO TV" />
       <element id="extracted-dir" path="$PROJECT_DIR$/src/resources/ojdbc8.jar" path-in-jar="/" />
+      <element id="library" level="module" name="JUnit4" module-name="VIVO TV" />
+      <element id="library" level="project" name="ojdbc8" />
+      <element id="library" level="module" name="JUnit5.4" module-name="VIVO TV" />
     </root>
   </artifact>
 </component>

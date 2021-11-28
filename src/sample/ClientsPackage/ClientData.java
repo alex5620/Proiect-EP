@@ -77,4 +77,9 @@ public class ClientData {
     StringProperty getEmailProperty() {
         return email;
     }
+
+    String getFullName() {
+        return firstName.getName() + " " + lastName.getValue();
+    }
+
 }

@@ -8,7 +8,8 @@ public class ChannelsDatabaseErrorChecker {
     private boolean errorFound;
     private String errorMessage;
 
-    private ChannelsDatabaseErrorChecker() {}
+    private ChannelsDatabaseErrorChecker() {
+    }
 
     void checkError(String error) {
         errorFound = true;
@@ -43,9 +44,11 @@ public class ChannelsDatabaseErrorChecker {
         errorFound = value;
     }
 
-    boolean getErrorFound() {
+    public boolean getErrorFound() {
         return errorFound;
     }
+
+    public String getErrorMessage() { return errorMessage; }
 
     void createAlertDialogue() {
         Alert alert = new Alert(Alert.AlertType.ERROR, errorMessage, ButtonType.OK);

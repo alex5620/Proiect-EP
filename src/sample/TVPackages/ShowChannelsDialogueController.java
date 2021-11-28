@@ -10,6 +10,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import sample.ChannelsPackage.ChannelData;
 
+import java.util.List;
+
 public class ShowChannelsDialogueController {
     @FXML
     private TableView<ChannelData> channelsTable;
@@ -23,7 +25,9 @@ public class ShowChannelsDialogueController {
     private Label textLabel;
 
     void showInfo(TVPackageData packageData) {
-        ObservableList<ChannelData> channels = FXCollections.observableArrayList(packageData.getAvailableChannels());
+        List<ChannelData> listOfChannels = packageData.getAvailableChannels();
+        ChannelsSorter.insertionSort(listOfChannels);
+        ObservableList<ChannelData> channels = FXCollections.observableArrayList(listOfChannels);
         nameColumn.setCellValueFactory(cellData -> cellData.getValue().getNameProperty());
         typeColumn.setCellValueFactory(cellData -> cellData.getValue().getTypeProperty());
         frequencyColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().getFrequencyProperty().getValue()).asObject());

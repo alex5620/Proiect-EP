@@ -68,7 +68,7 @@ public class ChannelsDatabaseHandler {
         return count;
     }
 
-    ArrayList<ChannelData> getChannels(int page, int itemsPerPage, String name) {
+    public ArrayList<ChannelData> getChannels(int page, int itemsPerPage, String name) {
         getConnection();
         ArrayList<ChannelData> channels = null;
         try {
@@ -110,7 +110,7 @@ public class ChannelsDatabaseHandler {
         return channels;
     }
 
-    void addChannel(ChannelData channel) {
+    public void addChannel(ChannelData channel) {
         getConnection();
         setAutocommit(false);
         try {
@@ -195,7 +195,7 @@ public class ChannelsDatabaseHandler {
         }
     }
 
-    private int getMaxID() {
+    public int getMaxID() {
         int maxID = 0;
         try {
             Statement stmt = con.createStatement();
@@ -211,7 +211,7 @@ public class ChannelsDatabaseHandler {
         return maxID;
     }
 
-    void removeChannel(int id) {
+    public void removeChannel(int id) {
         removeFromPackageChannels(id);
         removeFromChannelsDetails(id);
         removeFromChannels(id);

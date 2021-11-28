@@ -12,6 +12,7 @@ import sample.ChannelsPackage.ChannelData;
 import sample.ChannelsPackage.ChannelsDatabaseHandler;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class AddChannelsDialogueController {
     @FXML
@@ -29,7 +30,7 @@ public class AddChannelsDialogueController {
         );
         ObservableList<ChannelData> allChannels = FXCollections.observableArrayList(ChannelsDatabaseHandler.getInstance().getAllChannels());
         ArrayList<ChannelData> packageChannels = packageData.getAvailableChannels();
-        ObservableList<ChannelData> availableChannels = FXCollections.observableArrayList();
+        List<ChannelData> availableChannels = new ArrayList();
         boolean found;
         for (ChannelData channel : allChannels) {
             found = false;
@@ -50,7 +51,8 @@ public class AddChannelsDialogueController {
         if (availableChannels.size() >= 14) {
             channelsTable.setPrefWidth(channelsTable.getPrefWidth() + 12);
         }
-        channelsTable.setItems(availableChannels);
+        ChannelsSorter.insertionSort(availableChannels);
+        channelsTable.setItems(FXCollections.observableArrayList(availableChannels));
     }
 
     void addSelectedChannels(TVPackageData packageData) {

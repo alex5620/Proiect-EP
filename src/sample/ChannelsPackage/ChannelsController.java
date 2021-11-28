@@ -186,7 +186,7 @@ public class ChannelsController implements Initializable {
         return 18;
     }
 
-    private int getProperPageNumber(int rowsNum) {
+    public int getProperPageNumber(int rowsNum) {
         int pagesNumber = rowsNum / rowsPerPage() + 1;
         if (rowsNum % rowsPerPage() == 0) {
             --pagesNumber;

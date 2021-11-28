@@ -3,11 +3,14 @@ package sample.ClientsPackage;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.util.Arrays;
+import java.util.Comparator;
+
 class Clients {
     private static Clients clients = new Clients();
     private ObservableList<ClientData> allClients;
 
-    private Clients() {};
+    private Clients() {}
 
     static Clients getClients() {
         return clients;

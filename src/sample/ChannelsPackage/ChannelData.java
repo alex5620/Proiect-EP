@@ -2,7 +2,7 @@ package sample.ChannelsPackage;
 
 import javafx.beans.property.*;
 
-public class ChannelData {
+public class ChannelData implements Comparable {
     private IntegerProperty id;
     private StringProperty name;
     private StringProperty startDate;
@@ -84,5 +84,11 @@ public class ChannelData {
 
     public void setChannel(Integer channel) {
         this.channel.set(channel);
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        return this.name.getValue().toUpperCase().compareTo(((ChannelData) o).
+                getNameProperty().getValue().toUpperCase());
     }
 }

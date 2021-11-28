@@ -9,11 +9,11 @@ public class Channels {
 
     private Channels() {}
 
-    static Channels getChannels() {
+    public static Channels getChannels() {
         return channels;
     }
 
-    void addData(int page, int itemsPerPage, String name) {
+    public void addData(int page, int itemsPerPage, String name) {
         allChannels = FXCollections.observableArrayList(ChannelsDatabaseHandler.getInstance().getChannels(page, itemsPerPage, name));
     }
 
