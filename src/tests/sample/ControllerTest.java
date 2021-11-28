@@ -1,7 +1,6 @@
 package sample;
 
 import org.junit.Test;
-import sample.ChannelsPackage.Channels;
 import sample.ChannelsPackage.ChannelsController;
 
 import static org.junit.Assert.assertEquals;
